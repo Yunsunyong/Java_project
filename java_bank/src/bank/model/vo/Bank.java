@@ -10,11 +10,11 @@ public class Bank {
 	private int age;       				//나이
 	private String bNumber;		//계좌번호
 	private int price;					//금액
-	private Date openDate;      	//통장개설날짜
+	private String openDate;      	//통장개설날짜
 
 	public Bank() {}
 
-	public Bank(String userName, char gender, int age, String bNumber, int price, Date openDate) {
+	public Bank(String userName, char gender, int age, String bNumber, int price, String openDate) {
 		this.userName = userName;
 		this.gender = gender;
 		this.age = age;
@@ -47,7 +47,7 @@ public class Bank {
 		this.price = price;
 	}
 
-	public void setOpenDate(Date openDate) {
+	public void setOpenDate(String openDate) {
 		this.openDate = openDate;
 	}
 
@@ -75,14 +75,14 @@ public class Bank {
 		return price;
 	}
 
-	public Date getOpenDate() {
+	public String getOpenDate() {
 		return openDate;
 	}
 	
 	@Override
 	public String toString() {
-		return "이름 :" +userName + " 성별 :" + gender + "자 나이 :" + age + "세" + 
-				 "\n 계좌번호 :" +bNumber + " 잔액 :" +price + "원 " + openDate;
+		return "이름:" +userName + " 성별:" + gender + "자 나이:" + age + "세" + 
+				 "\n 계좌번호:" +bNumber + " 잔액:" +price + "원 " + "개설날짜:"+openDate;
 	}
 	
 

@@ -14,6 +14,7 @@ public class BankController {
 	private int bNo;
 	private Properties prop = new Properties();
 	private Properties prop2 = new Properties();
+	private Properties prop3 = new Properties();
 	private BankMenu bm = new BankMenu();
 	
 	public BankController() {
@@ -53,11 +54,32 @@ public class BankController {
 		return prop;
 	}
 	
+	public void bankInsert2(String value) {
+		Scanner sc = new Scanner(System.in);
+		bNo = prop3.size();
+		System.out.println(bNo);
+		prop3.setProperty(String.valueOf(bNo), value);
+
+		System.out.println("        ==== KH은행 ====");
+		try {
+			System.out.print("저장할 고객통장 파일명 :");
+			String FileName2 = sc.next();
+			prop3.storeToXML(new FileOutputStream(FileName2), "고객통장정보");
+		} catch (FileNotFoundException e) {
+			System.out.println("통장을 개설해주시기 바랍니다.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public Properties bankAllPrint() {
 		return prop;
 	}
 	
 	public Properties bankSearch() {
+		return prop;
+	}
+	public Properties bankDeposit() {
 		return prop;
 	}
 }
