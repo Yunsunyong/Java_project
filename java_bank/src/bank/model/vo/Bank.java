@@ -1,5 +1,7 @@
 package bank.model.vo;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Bank {
@@ -10,11 +12,11 @@ public class Bank {
 	private int age;       				//나이
 	private String bNumber;		//계좌번호
 	private int price;					//금액
-	private String openDate;      	//통장개설날짜
+	private Date openDate = Calendar.getInstance().getTime();      	//통장개설날짜
 
 	public Bank() {}
 
-	public Bank(String userName, char gender, int age, String bNumber, int price, String openDate) {
+	public Bank(String userName, char gender, int age, String bNumber, int price, Date openDate) {
 		this.userName = userName;
 		this.gender = gender;
 		this.age = age;
@@ -47,7 +49,7 @@ public class Bank {
 		this.price = price;
 	}
 
-	public void setOpenDate(String openDate) {
+	public void setOpenDate(Date openDate) {
 		this.openDate = openDate;
 	}
 
@@ -76,13 +78,14 @@ public class Bank {
 	}
 
 	public String getOpenDate() {
-		return openDate;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		return sdf.format(openDate);
 	}
 	
 	@Override
 	public String toString() {
-		return "이름:" +userName + " 성별:" + gender + "자 나이:" + age + "세" + 
-				 "\n 계좌번호:" +bNumber + " 잔액:" +price + "원 " + "개설날짜:"+openDate;
+		return userName+ "|" + gender + "|" + age +
+				 "|" +bNumber + "|" +price + "|"+getOpenDate();
 	}
 	
 

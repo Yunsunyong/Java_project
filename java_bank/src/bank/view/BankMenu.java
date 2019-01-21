@@ -13,7 +13,6 @@ public class BankMenu {
 	
 	public void bankMenu() {	
 		int mnum;
-		//Scanner sc = new Scanner(System.in);
 		BankMenu bm = new BankMenu();
 		do {
 			System.out.println("======= 통장개설 프로그램 ======="); 
@@ -36,6 +35,7 @@ public class BankMenu {
 			case 5 : bm.bankWithdrawal(); break;   //출금
 			case 6 : bm.bankAccTransfer(); break;   //계좌이체
 			case 7 : System.out.println("통장관리 프로그램 종료합니다."); break;
+			case 8 : bm.bankRemove(); break;
 			default : System.out.println("번호를 잘못 입력하셨습니다.");
 						System.out.println("다시 입력해주세요."); break;
 			}
@@ -47,7 +47,7 @@ public class BankMenu {
 		Bank bk = new Bank();
 		Properties prop = new Properties();
 		BankController bctro = new BankController();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy'년'mm'월'dd'일'");
+		
 		
 		System.out.print("이름 입력 :");
 		String userName = sc.next();
@@ -59,9 +59,8 @@ public class BankMenu {
 		String bNumber = sc.next();
 		System.out.print("기본 금액 입력 :");
 		int price = sc.nextInt();
-		String openDate = sdf.format(new Date());
-		
-		bk = new Bank(userName, gender, age, bNumber, price, openDate);
+				
+		bk = new Bank(userName, gender, age, bNumber, price, new Date());
 		
 		prop = bctro.bankInsert(bk.toString());
 	}
@@ -101,46 +100,116 @@ public class BankMenu {
 	//4. 입금 메소드
 	public void bankDeposit() {
 		BankController bctro = new BankController();
-		Properties prop = bctro.bankDeposit();
-		SimpleDateFormat sdf = new SimpleDateFormat("yymmdd");
+		Properties prop = bctro.bankSearch();
+		Bank bk = new Bank();
 		Set<String> sProp = prop.stringPropertyNames();
 		Iterator<String> iter = sProp.iterator();
 		
-		String valueT = null;
-		while(iter.hasNext()) {
-			String key = iter.next();
-			String value = prop.getProperty(key);
-			System.out.println(key+"="+value);
-			
-			System.out.print("수정할 금액 :");
-			String setPrice = sc.next(); 
+		if (prop.size() == 1) {
+			while (iter.hasNext()) {
+				String key = iter.next();
+				String value = prop.getProperty(key);
+				System.out.println(key + "=" + value);
 
-			if(prop.getProperty(key).contains(setPrice)) {
+				String[] sar = value.split("\\|");
+				int price = Integer.parseInt(sar[4]);
 				System.out.print("내용:");
-				sc.nextLine();
-				String content = sc.nextLine();
-				System.out.print("찾으신 금액:");
-				String foundPrice = sc.next();
+				String content = sc.next();
 				System.out.print("입금할 금액:");
 				int price2 = sc.nextInt();
-				String priceS = Integer.toString(price2);
-				
-				int price = Integer.parseInt(setPrice);
 				int sum = price + price2;
-				String sums = Integer.toString(sum);
+				String userInfo = content + "|입금["+price2+"]|잔액["+ sum + "]|" + bk.getOpenDate();
+
+				bctro.bankDeposit(userInfo);
+				break;
+			}										
+		}else {
+			while (iter.hasNext()) {
+				String key = iter.next();
+				String value = prop.getProperty(key);
+				System.out.println(key + "=" + value);
+
+				String[] sar = value.split("\\|");
+				String[] sar2 = sar[2].split("\\[|\\]");
+				int price = Integer.parseInt(sar2[1]);
 				
-				valueT = "거래일:"+sdf.format(new Date()) + " 내용:" +content+
-						" 찾으신 금액:" +foundPrice+ " 입금한 금액:" + priceS +
-						" 잔액:" + sums;
+				System.out.print("내용:");
+				String content = sc.next();
+				System.out.print("입금할 금액:");
+				int price2 = sc.nextInt();
+				int sum = price + price2;
+				String userInfo = content + "|입금["+price2+"]|잔액["+ sum + "]|" + bk.getOpenDate();
+
+				bctro.bankDeposit(userInfo);
 				break;
 			}
 		}
-		bctro.bankInsert2(valueT);
 	}
 	
 	//5. 출금 메소드
 	public void bankWithdrawal() {
+		BankController bctro = new BankController();
+		Properties prop = bctro.bankSearch();
+		Bank bk = new Bank();
+		Set<String> sProp = prop.stringPropertyNames();
+		Iterator<String> iter = sProp.iterator();
 		
+		if (prop.size() == 1) {
+			while (iter.hasNext()) {
+				String key = iter.next();
+				String value = prop.getProperty(key);
+				System.out.println(key + "=" + value);
+
+				String[] sar = value.split("\\|");
+				int price = Integer.parseInt(sar[4]);
+				System.out.print("내용:");
+				String content = sc.next();
+				System.out.print("출금할 금액:");
+				int price2 = sc.nextInt();
+				int sum = price - price2;
+				String userInfo = content + "|출금["+price2+"]|잔액["+ sum + "]|" + bk.getOpenDate();
+
+				bctro.bankWithdrawal(userInfo);
+				break;
+			}										
+		}else {
+			while (iter.hasNext()) {
+				String key = iter.next();
+				String value = prop.getProperty(key);
+				System.out.println(key + "=" + value);
+
+				String[] sar = value.split("\\|");
+				String[] sar2 = sar[2].split("\\[|\\]");
+				int price = Integer.parseInt(sar2[1]);
+				
+				System.out.print("내용:");
+				String content = sc.next();
+				System.out.print("출금할 금액:");
+				int price2 = sc.nextInt();
+				int sum = price - price2;
+				String userInfo = content + "|출금["+price2+"]|잔액["+ sum + "]|" + bk.getOpenDate();
+
+				bctro.bankWithdrawal(userInfo);
+				break;
+			}
+		}
+	}
+	
+	public void bankRemove() {
+		BankController bctro = new BankController();
+		Properties prop = bctro.bankSearch();
+		
+		Set<String> sProp = prop.stringPropertyNames();
+		Iterator<String> iter = sProp.iterator();
+		while(iter.hasNext()) {
+			String key = iter.next();
+			System.out.print("삭제할 고유번호 :");
+			String num = sc.next();
+			if(key.equals(num)) {
+				prop.remove(key);
+				break;
+			}
+		}
 	}
 	
 	//6. 계좌이체 메소드
