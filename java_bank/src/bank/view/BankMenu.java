@@ -10,7 +10,7 @@ import bank.model.vo.Bank;
 
 public class BankMenu {
 	private Scanner sc = new Scanner(System.in);
-	
+	//private BankController bctro = new BankController();
 	public void bankMenu() {	
 		int mnum;
 		BankMenu bm = new BankMenu();
@@ -35,7 +35,6 @@ public class BankMenu {
 			case 5 : bm.bankWithdrawal(); break;   //출금
 			case 6 : bm.bankAccTransfer(); break;   //계좌이체
 			case 7 : System.out.println("통장관리 프로그램 종료합니다."); break;
-			case 8 : bm.bankRemove(); break;
 			default : System.out.println("번호를 잘못 입력하셨습니다.");
 						System.out.println("다시 입력해주세요."); break;
 			}
@@ -46,8 +45,9 @@ public class BankMenu {
 	public void bankInsert() {
 		Bank bk = new Bank();
 		Properties prop = new Properties();
-		BankController bctro = new BankController();
-		
+		System.out.print("불러올 통장명 :");
+		String fileName = sc.next();
+		BankController bctro = new BankController(fileName);
 		
 		System.out.print("이름 입력 :");
 		String userName = sc.next();
@@ -67,8 +67,13 @@ public class BankMenu {
 	
 	//2. 통장 전체 조회 메소드
 	public void bankAllPrint() {
-		BankController bctro = new BankController();
+		//전체 조회할 통장명 입력받기
+		System.out.print("전체 조회할 통장명 :");
+		String fileName = sc.next();
+		//BankController에 넘겨서 통장부르기
+		BankController bctro = new BankController(fileName);
 		Properties prop = bctro.bankAllPrint();
+		//Set이용해 key,value 추출
 		Set<String> sProp = prop.stringPropertyNames();
 		Iterator<String> iter = sProp.iterator();
 		while(iter.hasNext()) {
@@ -80,11 +85,16 @@ public class BankMenu {
 	
 	//3. 통장 검색 조회 메소드
 	public void bankSearh() {
-		BankController bctro = new BankController();
-		Properties prop = bctro.bankSearch();
+		//검색할 통장명 입력받기
+		System.out.print("검색할 통장명:");
+		String fileName =sc.next();
+		//BankController에 넘겨서 통장부르기
+		Properties prop = new BankController(fileName).bankSearch();
+		//Set이용해 key,value 추출
 		Set<String> sProp = prop.stringPropertyNames();
 		Iterator<String> iter = sProp.iterator();
 		
+		//이름 검색
 		System.out.print("검색할 이름명 :");
 		String userName = sc.next();
 		
@@ -99,12 +109,20 @@ public class BankMenu {
 	
 	//4. 입금 메소드
 	public void bankDeposit() {
-		BankController bctro = new BankController();
+		//입금할 통장명 입력받기
+		System.out.print("입금할 통장명:");
+		String fileName =sc.next();
+		//BankController에 넘겨서 통장부르기
+		BankController bctro = new BankController(fileName);
 		Properties prop = bctro.bankSearch();
 		Bank bk = new Bank();
+		
+		//Set이용해 key,value 추출
 		Set<String> sProp = prop.stringPropertyNames();
 		Iterator<String> iter = sProp.iterator();
 		
+		//Properties xml파일 안 사이즈 1 인경우
+		//고객정보와 입금내용이 달라서 구분 지음
 		if (prop.size() == 1) {
 			while (iter.hasNext()) {
 				String key = iter.next();
@@ -148,18 +166,26 @@ public class BankMenu {
 	
 	//5. 출금 메소드
 	public void bankWithdrawal() {
-		BankController bctro = new BankController();
+		//출금통장명입력받기
+		System.out.print("출금할 통장명:");
+		String fileName =sc.next();
+		//BankController에 넘겨서 통장부르기
+		BankController bctro = new BankController(fileName);
 		Properties prop = bctro.bankSearch();
 		Bank bk = new Bank();
+		//Set이용해 key,value 추출
 		Set<String> sProp = prop.stringPropertyNames();
 		Iterator<String> iter = sProp.iterator();
 		
+		//Properties xml파일 안 사이즈 1 인경우
+		//고객정보와 입금내용이 달라서 구분 지음
 		if (prop.size() == 1) {
 			while (iter.hasNext()) {
 				String key = iter.next();
 				String value = prop.getProperty(key);
 				System.out.println(key + "=" + value);
-
+				
+				//value 값 자르기
 				String[] sar = value.split("\\|");
 				int price = Integer.parseInt(sar[4]);
 				System.out.print("내용:");
@@ -168,17 +194,20 @@ public class BankMenu {
 				int price2 = sc.nextInt();
 				int sum = price - price2;
 				String userInfo = content + "|출금["+price2+"]|잔액["+ sum + "]|" + bk.getOpenDate();
-
+				
+				//내용 넘겨서 저장하기
 				bctro.bankWithdrawal(userInfo);
 				break;
 			}										
-		}else {
+		}else { //그 외 
 			while (iter.hasNext()) {
 				String key = iter.next();
 				String value = prop.getProperty(key);
 				System.out.println(key + "=" + value);
-
+				
+				//value 값 자르기
 				String[] sar = value.split("\\|");
+				//잔액 추출을 위한 자르기
 				String[] sar2 = sar[2].split("\\[|\\]");
 				int price = Integer.parseInt(sar2[1]);
 				
@@ -188,15 +217,30 @@ public class BankMenu {
 				int price2 = sc.nextInt();
 				int sum = price - price2;
 				String userInfo = content + "|출금["+price2+"]|잔액["+ sum + "]|" + bk.getOpenDate();
-
+				
+				//내용 넘겨서 저장하기
 				bctro.bankWithdrawal(userInfo);
 				break;
 			}
 		}
 	}
 	
+	//6. 계좌이체 메소드
+	public void bankAccTransfer() {
+		System.out.println("       ***** 계좌이체 *****");
+		//계좌이체할 파일 부르기
+		//출금될 계좌
+		bankWithdrawal();
+		//입금될 계좌
+		bankDeposit();
+		System.out.println("계좌이체 성공하셨습니다.\n");
+	}
+	
+	//통장삭제 메소드
 	public void bankRemove() {
-		BankController bctro = new BankController();
+		System.out.print("해지할 통장명:");
+		String fileName =sc.next();
+		BankController bctro = new BankController(fileName);
 		Properties prop = bctro.bankSearch();
 		
 		Set<String> sProp = prop.stringPropertyNames();
@@ -210,10 +254,5 @@ public class BankMenu {
 				break;
 			}
 		}
-	}
-	
-	//6. 계좌이체 메소드
-	public void bankAccTransfer() {
-		
 	}
 }

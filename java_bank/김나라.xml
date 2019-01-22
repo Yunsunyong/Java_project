@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-<comment>고객통장정보</comment>
-<entry key="3">CD출금|출금[2400]|잔액[4100]|20190121</entry>
-<entry key="2">CD입금|입금[6000]|잔액[6500]|20190121</entry>
-<entry key="1">CD출금|출금[500]|잔액[500]|20190121</entry>
-<entry key="002">김나라|여|39|102|1000|20190121</entry>
-</properties>

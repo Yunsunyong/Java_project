@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-<comment>고객정보</comment>
-<entry key="003">기본이|남|10|104|5000|20190121</entry>
-<entry key="002">김나라|여|39|102|1000|20190121</entry>
-<entry key="001">김삿갓|남|19|101|2000|20190121</entry>
-<entry key="000">홍길동|남|20|100|1000|20190121</entry>
-</properties>

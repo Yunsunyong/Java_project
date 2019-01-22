@@ -17,20 +17,18 @@ public class BankController {
 	private Properties prop2 = new Properties();
 	private BankMenu bm = new BankMenu();
 	
-	public BankController() {
-		Scanner sc = new Scanner(System.in);
-		System.out.print("불러올 파일명 :");
-		String fileName = sc.next();
+	public BankController() {}
+	public BankController(String fileName) {
 		
 		try {
-			prop.loadFromXML(new FileInputStream(fileName));		
+			prop.loadFromXML(new FileInputStream(fileName+".xml"));		
 		} catch (FileNotFoundException e) {
 			System.out.println("통장을 개설해주시기 바랍니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Properties bankInsert(String value) {
 		Scanner sc = new Scanner(System.in);
 		Bank bk = new Bank();
@@ -45,7 +43,7 @@ public class BankController {
 			prop.storeToXML(new FileOutputStream("khbank.xml"), "고객정보");
 			System.out.print("저장할 고객통장 파일명 :");
 			String FileName2 = sc.next();
-			prop2.storeToXML(new FileOutputStream(FileName2), "고객통장정보");
+			prop2.storeToXML(new FileOutputStream(FileName2+".xml"), "고객통장정보");
 			System.out.println("       ***** 통장개설완료 *****\n");
 		} catch (FileNotFoundException e) {
 			System.out.println("통장을 개설해주시기 바랍니다.");
@@ -60,6 +58,14 @@ public class BankController {
 	}
 	
 	public Properties bankSearch() {
+		/*try {
+			prop.loadFromXML(new FileInputStream(fileName+".xml"));		
+		} catch (FileNotFoundException e) {
+			System.out.println("통장을 개설해주시기 바랍니다.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
 		return prop;
 	}
 	public void bankDeposit(String value) {
@@ -71,7 +77,7 @@ public class BankController {
 		try {
 			System.out.print("저장할 고객통장 파일명 :");
 			String FileName = sc.next();
-			prop.storeToXML(new FileOutputStream(FileName), "고객통장정보");
+			prop.storeToXML(new FileOutputStream(FileName+".xml"), "고객통장정보");
 			System.out.println("입금완료하셨습니다.\n");
 		} catch (FileNotFoundException e) {
 			System.out.println("통장을 개설해주시기 바랍니다.");
@@ -89,12 +95,16 @@ public class BankController {
 		try {
 			System.out.print("저장할 고객통장 파일명 :");
 			String FileName = sc.next();
-			prop.storeToXML(new FileOutputStream(FileName), "고객통장정보");
+			prop.storeToXML(new FileOutputStream(FileName+".xml"), "고객통장정보");
 			System.out.println("출금완료하셨습니다.\n");
 		} catch (FileNotFoundException e) {
 			System.out.println("통장을 개설해주시기 바랍니다.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Properties bankAccTransfer(String fileName) {
+		return prop;
 	}
 }

@@ -78,7 +78,7 @@ public class Bank {
 	}
 
 	public String getOpenDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 		return sdf.format(openDate);
 	}
 	
