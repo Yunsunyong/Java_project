@@ -105,6 +105,13 @@ public class BankController {
 	}
 	
 	public Properties bankAccTransfer(String fileName) {
+		try {
+			prop.loadFromXML(new FileInputStream(fileName+".xml"));		
+		} catch (FileNotFoundException e) {
+			System.out.println("통장을 개설해주시기 바랍니다.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return prop;
 	}
 }
