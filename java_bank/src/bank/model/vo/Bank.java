@@ -85,7 +85,7 @@ public class Bank {
 	@Override
 	public String toString() {
 		return userName+ "|" + gender + "|" + age +
-				 "|" +bNumber + "|" +price + "|"+getOpenDate();
+				 "|" +bNumber + "|잔액[" +price + "]|"+getOpenDate();
 	}
 	
 

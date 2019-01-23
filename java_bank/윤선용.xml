@@ -2,5 +2,6 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <comment>고객통장정보</comment>
+<entry key="1">cd입금|입금[4000]|잔액[7000]|20190123 15:25:46</entry>
 <entry key="000">윤선용|남|29|0000|3000|20190122 19:33:12</entry>
 </properties>

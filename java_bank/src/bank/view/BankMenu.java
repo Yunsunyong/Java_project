@@ -136,7 +136,7 @@ public class BankMenu {
 				System.out.print("입금할 금액:");
 				int price2 = sc.nextInt();
 				int sum = price + price2;
-				String userInfo = content + "|입금["+price2+"]|잔액["+ sum + "]|" + bk.getOpenDate();
+				String userInfo = content +"|입금["+price2+"]|잔액["+ sum + "]|" + bk.getOpenDate();
 
 				bctro.bankDeposit(userInfo);
 				break;
