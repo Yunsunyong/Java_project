@@ -10,7 +10,7 @@ import bank.model.vo.Bank;
 
 public class BankMenu {
 	private Scanner sc = new Scanner(System.in);
-	private int bNum = 1;
+	private int bNum = 1000;
 	
 	public void bankMenu() {	
 		int mnum;
@@ -56,7 +56,7 @@ public class BankMenu {
 		char gender = sc.next().charAt(0);
 		System.out.print("나이 입력 :");
 		int age = sc.nextInt();
-		String bNumber = "000"+ bNum++;
+		String bNumber = "0"+ bNum++;
 		System.out.print("기본 금액 입력 :");
 		int price = sc.nextInt();
 				
@@ -236,6 +236,8 @@ public class BankMenu {
 		Properties prop = bctro.bankAccTransfer(fileName);
 		System.out.print("이체할 계좌번호 :");
 		String bNumber = sc.next();
+		System.out.print("이체할 이름 :");
+		String userName = sc.next();
 		
 		Bank bk = new Bank();
 		Set<String> sProp = prop.stringPropertyNames();
@@ -293,8 +295,20 @@ public class BankMenu {
 		System.out.println("계좌이체 성공하셨습니다.\n");
 	}
 	
-	public String bankBNumber(String bNumber) {
-		return null;
+	public Properties bankBNumber(String bNumber, String userName) {
+		Properties prop = new BankController(userName).bankSearch();
+		
+		Set<String> sProp = prop.stringPropertyNames();
+		Iterator<String> iter = sProp.iterator();
+		
+		while(iter.hasNext()) {
+			String key = iter.next();
+			
+			if(prop.getProperty(key).contains(bNumber)) {
+				return prop;
+			}
+		}
+		return prop;
 	}
 	
 	
